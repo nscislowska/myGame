@@ -1,0 +1,1 @@
+export var assetsImgPath = '../../assets/img/';
