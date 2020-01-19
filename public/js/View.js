@@ -1,19 +1,25 @@
-export class View {
-    constructor(name, scene, visible){
-        this.name = null;
-        this.scene = null;
-        this.visible = null;
-        this.objects=new Array();
+export class View{
+    constructor(name, x,y){
+        this.name = name;
+        this.x = x;
+        this.y = y;
+
+        this.gameObjects = [];
+
+        this.leftView = null;
+        this.rightView = null;
+        this.topView = null;
+        this.bottomView = null;
     }
 
-    addObject(gameObject){
-        this.objects.push(gameObject.setVisible(this.visible));
+    setLeft(view){
+        this.leftView = view;
+        view.rightView = this;
     }
 
-    setVisible(visible){
-        this.visible = visible;
+    setRight(view){
+        this.rightView = view;
+        view.leftView = this;
     }
-
-
 
 }

@@ -1,3 +1,4 @@
+
 export class Game{
     constructor({width, height}, HTMLParentID){
 
@@ -13,7 +14,8 @@ export class Game{
                     debug: false
                 }
             },
-            scene : null
+            scene : null,
+            
         }
         
         this.game = new Phaser.Game(this.config);

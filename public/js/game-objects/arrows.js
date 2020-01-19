@@ -8,10 +8,12 @@ export class ControlArrows {
         this.BOTTOM = 'bottom';
         this.ALL = ['top', 'left', 'right', 'bottom'];
         
-        this.right = new GameObject(scene, 'right arrow', [775, 300], textureName),
-        this.left = new GameObject(scene, 'left arrow', [15, 300], textureName),
-        this.top = new GameObject(scene, 'top arrow', [0, 0], textureName),
-        this.bottom = new GameObject(scene, 'bottom arrow', [0, 0], textureName)
+        this.right = new GameObject(scene, 'right arrow', [775, 300], textureName);
+        this.left = new GameObject(scene, 'left arrow', [15, 300], textureName);
+        this.top = new GameObject(scene, 'top arrow', [0, 0], textureName);
+        this.bottom = new GameObject(scene, 'bottom arrow', [0, 0], textureName);
+
+        this.lock();
     }
 
     setVisibleOnly(visible, ...arrowKeys) {
@@ -29,5 +31,11 @@ export class ControlArrows {
             this[key][action](params);
         }
     }
+
+    lock(){
+        this.actionOnChosen(this.ALL, 'lock');
+    }
+
+
     
 }

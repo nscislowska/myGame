@@ -1,18 +1,25 @@
+import { Camera } from "./Camera.js";
+import { View } from "./View.js";
+
 export class Scene extends Phaser.Scene {
 
     constructor (config) {
         super(config);
         this.name=this.sys.config.key;
-        this.views = null;
         this.assetsImgPath = '../../assets/img/';
         this.viewList = null;
+        this.camera = null;
     }
 
     init(data) {
         console.log('init scene '+this.name+': '+data);
+        console.log(this.cameras.main);
+
+        this.camera = new Camera(this.cameras.main, new View('main',0,0));
     }
     preload () {}
-    create (data)  {}
+    create (data)  {
+    }
     update(time, delta) {}
 
     setAssetsImgPath(assetsImgPath){
@@ -38,6 +45,7 @@ export class Scene extends Phaser.Scene {
     }
 
     addCamera(x,y){
+
         let {height, width} = this.getWindowSize();
         this.cameras.add(x,y,width,height);
     }

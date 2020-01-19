@@ -1,11 +1,11 @@
 import { generateSceneConfig, Scene } from "../Scene.js";
 import {assetsImgPath} from "./sceneAssetsPath.js";
 import {ControlArrows} from "../game-objects/arrows.js";
-import { Cameras } from "../Cameras.js";
+import { View } from "../View.js";
+// import {rexAnchor} from './plugins/anchor.js';
 
 var sceneName = 'main';
 var mainSceneConfig = generateSceneConfig(sceneName);
-var cameras;
 // mainScene
 var mainScene = new Scene(mainSceneConfig);
 mainScene.preload = () => {
@@ -17,8 +17,7 @@ mainScene.preload = () => {
 
 }
 mainScene.create = () => {
-    cameras = new Cameras(mainScene.getCameraManager(), mainScene.getGameWidth(), mainScene.getGameHeight());
-    addCameras();
+    addViews();
     addBackground(mainScene);
     addPlatforms(mainScene);
     addControlArrows(mainScene);
@@ -28,13 +27,14 @@ mainScene.update = () => {
 }
 export { mainScene };
 
-function addCameras(){
-    cameras.add(0,0);
-    cameras.getLast().setScroll(100,0);
+function addViews(){
+    var currentView = mainScene.camera.currentView;
 
-    cameras.add(0,0);
-    cameras.getLast().setScroll(-100,0);
-    // mainScene.addCamera(100,0);
+    var view1 = new View('1', 200, 0);
+    var view_1 = new View('-1',-200,0);
+    currentView.setRight(view1);
+    currentView.setLeft(view_1);
+    view1.setRight(view_1);
 }
 
 function addBackground(myScene) {
@@ -62,10 +62,11 @@ function addControlArrows(scene){
 
 function clickLeft() {
     console.log(`${this.name} was clicked!`);
-    cameras.previous();
+    mainScene.camera.jumpLeft();
 }
 
 function clickRight(){
     console.log(`${this.name} was clicked!`);
-    cameras.next();
+    // cameras.next();
+    mainScene.camera.jumpRight();
 }
