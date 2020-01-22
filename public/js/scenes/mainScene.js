@@ -1,12 +1,9 @@
 import { generateSceneConfig, Scene } from "../Scene.js";
 import {assetsImgPath} from "./sceneAssetsPath.js";
-import {ControlArrows} from "../game-objects/arrows.js";
 import { View } from "../View.js";
-// import {rexAnchor} from './plugins/anchor.js';
 
 var sceneName = 'main';
 var mainSceneConfig = generateSceneConfig(sceneName);
-// mainScene
 var mainScene = new Scene(mainSceneConfig);
 mainScene.preload = () => {
     mainScene.loadAssets({
@@ -16,29 +13,50 @@ mainScene.preload = () => {
     });
 
 }
-mainScene.create = () => {
-    addViews();
-    addBackground(mainScene);
-    addPlatforms(mainScene);
-    addControlArrows(mainScene);
-}
+mainScene.createBody = () => {
+    makeViews();
+    addObjectsToView0();
+    addObjectsToView1();
+    addObjectsToView01();
+    // addPlatforms(mainScene);
+};
+
 mainScene.update = () => {
 
 }
 export { mainScene };
 
-function addViews(){
-    var currentView = mainScene.camera.currentView;
+let view0, view01, view1, view_1;
 
-    var view1 = new View('1', 200, 0);
-    var view_1 = new View('-1',-200,0);
-    currentView.setRight(view1);
-    currentView.setLeft(view_1);
+function makeViews(){
+    view0 = mainScene.camera.currentView;
+    view01 = new View('01', 0, mainScene.getGameHeight());
+    view1 = new View('1', mainScene.getGameWidth(), 0);
+    view_1 = new View('-1',-mainScene.getGameWidth(),0);
+
+    view0.setTop(view01);
+    view0.setRight(view1);
+    view0.setLeft(view_1);
     view1.setRight(view_1);
+
+    mainScene.addView(view0);
+    mainScene.addView(view01);
+    mainScene.addView(view1);
 }
 
-function addBackground(myScene) {
-    myScene.add.image(0, 0, 'sky').setOrigin(0, 0);
+function addObjectsToView0(){
+    view0.addGameObject('background',0,0,'sky');
+    view0.addGameObject('ground',0,570,'ground');
+}
+
+function addObjectsToView1(){
+    view1.addGameObject('background',0,0,'sky');
+    view1.addGameObject('ground',300,300,'ground');
+    view1.addGameObject('ground',100,570,'ground');
+}
+
+function addObjectsToView01(){
+    view01.addGameObject('background',0,0,'sky');
 }
 
 function addPlatforms(game) {
@@ -49,24 +67,4 @@ function addPlatforms(game) {
     platforms.create(600, 400, 'ground');
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
-}
-
-function addControlArrows(scene){
-    let controlArrows = new ControlArrows(scene, 'star');
-    controlArrows.left.onClick(clickLeft);
-    controlArrows.right.onClick(clickRight);
-    controlArrows.setVisibleOnly(true, controlArrows.LEFT, controlArrows.RIGHT);
-
-    scene.controlArrows = controlArrows;
-}
-
-function clickLeft() {
-    console.log(`${this.name} was clicked!`);
-    mainScene.camera.jumpLeft();
-}
-
-function clickRight(){
-    console.log(`${this.name} was clicked!`);
-    // cameras.next();
-    mainScene.camera.jumpRight();
 }

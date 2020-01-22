@@ -1,5 +1,6 @@
 import { Camera } from "./Camera.js";
 import { View } from "./View.js";
+import { GameObject } from "./GameObject.js";
 
 export class Scene extends Phaser.Scene {
 
@@ -7,27 +8,25 @@ export class Scene extends Phaser.Scene {
         super(config);
         this.name=this.sys.config.key;
         this.assetsImgPath = '../../assets/img/';
-        this.viewList = null;
+        this.views = [];
         this.camera = null;
     }
 
     init(data) {
         console.log('init scene '+this.name+': '+data);
-        console.log(this.cameras.main);
-
         this.camera = new Camera(this.cameras.main, new View('main',0,0));
     }
     preload () {}
     create (data)  {
+        this.createBody(data);
+        this.makeGameObjects();
+        this.sys.game.controlArrows.render(this);
     }
+    createBody(data){}
     update(time, delta) {}
 
     setAssetsImgPath(assetsImgPath){
         this.assetsImgPath = assetsImgPath;
-    }
-
-    getWindowSize(){
-        return this.game.getWindowSize();
     }
 
     loadAssets(assets){
@@ -44,28 +43,33 @@ export class Scene extends Phaser.Scene {
         }
     }
 
-    addCamera(x,y){
-
-        let {height, width} = this.getWindowSize();
-        this.cameras.add(x,y,width,height);
-    }
-
-    moveCameraX(number){
-        this.cameras.main.scrollX = number;
-    }
-
-    moveCameraY(number){
-        this.cameras.main.scrollY = number;
-    }
-
     getCameraManager(){
         return this.cameras;
     }
     getGameWidth(){
-        return this.sys.game.width;
+        return document.getElementsByTagName('canvas')[0].width;
     }
     getGameHeight(){
-        return this.sys.game.height;
+        return document.getElementsByTagName('canvas')[0].height;
+    }
+
+    addView(view){
+        this.views.push(view);
+    }
+
+    getCurrentView(){
+        return this.camera.currentView;
+    }
+
+    makeGameObjects(){
+        let id=0;
+        for(let view of this.views){
+            for(let data of view.gameObjectsData){
+                let gameObject = new GameObject(this, id++, [data.x, data.y], data.textureName);
+                gameObject.setOriginByCode(gameObject.TOP_LEFT);
+                this.add.existing(gameObject);
+            }
+        }
     }
 
 }

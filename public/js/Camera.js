@@ -3,18 +3,15 @@ export class Camera{
         this.camera = camera;
         this.currentView = currentView;
         this.jumpTo(this.currentView);
-
-        
     }
 
     jumpTo(view){
         this.currentView = view;
-        console.log(this.currentView);
         this.camera.setScroll(this.currentView.x,this.currentView.y);
         console.log(`view ${this.currentView.name}`);
     }
 
-    jumpLeft(){
+    jumpLeft() {
         this.jumpTo(this.currentView.leftView);
     }
 
@@ -22,13 +19,12 @@ export class Camera{
         this.jumpTo(this.currentView.rightView);
     }
 
-
-    setTop(){
-        this.jumpTop = this.jumpTo(this.currentView.topView);
+    jumpTop(){
+        this.jumpTo(this.currentView.topView);
     }
 
-    setBottom(){
-        this.jumpBottom = this.jumpTo(this.currentView.bottomView);
+    jumpBottom(){
+        this.jumpTo(this.currentView.bottomView);
     }
 
 

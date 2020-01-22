@@ -19,13 +19,6 @@ export class Game{
         }
         
         this.game = new Phaser.Game(this.config);
-
-        this.game.getWindowSize = function(){
-            return{
-                height: this.canvas.height,
-                width: this.canvas.width
-            }
-        }
     }
 
     addScene(myScene){
@@ -34,6 +27,10 @@ export class Game{
 
     startScene(myScene, initData){
         this.game.scene.start(myScene.name, initData);
+    }
+
+    addControlArrows(controlArrows){
+        this.game.controlArrows = controlArrows;
     }
     
 }
