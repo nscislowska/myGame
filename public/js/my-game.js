@@ -3,8 +3,8 @@ import {mainScene} from "./scenes/mainScene.js"
 import {arrows} from './game-objects/arrows.js'
 
 const WINDOW_SIZE = {
-    height: 600,
-    width: 800
+    height: 700,
+    width: 1000
 }
 
 const PARENT_ID = 'game-window';

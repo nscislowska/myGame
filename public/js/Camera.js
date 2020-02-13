@@ -12,19 +12,19 @@ export class Camera{
     }
 
     jumpLeft() {
-        this.jumpTo(this.currentView.leftView);
+        this.jumpTo(this.currentView.getLeft());
     }
 
     jumpRight(){
-        this.jumpTo(this.currentView.rightView);
+        this.jumpTo(this.currentView.getRight());
     }
 
     jumpTop(){
-        this.jumpTo(this.currentView.topView);
+        this.jumpTo(this.currentView.getTop());
     }
 
     jumpBottom(){
-        this.jumpTo(this.currentView.bottomView);
+        this.jumpTo(this.currentView.getBottom());
     }
 
 

@@ -5,6 +5,7 @@ export class GameObject extends Image{
         super(scene,x,y, textureName);
         this.setName(name);
         this.FIXED_TO_CAMERA=0;
+        this.view = undefined;
     }
 
     lock(){

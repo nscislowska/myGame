@@ -5,31 +5,48 @@ export class View{
         this.y = y;
 
         this.gameObjectsData = [];
+        this.gameObjects = [];
 
-        this.leftView = null;
-        this.rightView = null;
-        this.topView = null;
-        this.bottomView = null;
+        this.left = null;
+        this.right = null;
+        this.top = null;
+        this.bottom = null;
+
+        this.DIRECTION = {
+            BOTH_WAYS : 2,
+            ONE_WAY : 1
+        }
+
+        this.setLeft = this.setSideView('left');
+        this.setRight = this.setSideView('right');
+        this.setBottom = this.setSideView('bottom');
+        this.setTop = this.setSideView('top');
+
+        this.getLeft = this.getSideView('left');
+        this.getRight = this.getSideView('right');
+        this.getBottom = this.getSideView('bottom');
+        this.getTop = this.getSideView('top');
+
     }
 
-    setLeft(view){
-        this.leftView = view;
-        view.rightView = this;
+    getSideView(side){
+        return () => this[side];
     }
 
-    setRight(view){
-        this.rightView = view;
-        view.leftView = this;
-    }
+    setSideView(side){
+        let opposite = {
+            right : 'left',
+            top : 'bottom',
+            bottom : 'top',
+            left : 'right'
+        }
 
-    setTop(view){
-        this.topView = view;
-        view.bottomView = this;
-    }
-
-    setBottom(view){
-        this.bottomView = view;
-        view.topView = this;
+        return (view, direction = this.DIRECTION.BOTH_WAYS) => {
+            this[side] = view;
+            if(direction === this.DIRECTION.BOTH_WAYS){
+                view[opposite[side]] = this;
+            }
+        }
     }
 
     addGameObject(name, x, y, textureName){
@@ -41,13 +58,17 @@ export class View{
         })
     }
 
-    putObjectAtFront(name){
+    putGameObjectAtFront(name){
         let objectIndex = this.gameObjectsData.findIndex((data)=>{
             return data.name === name;
         });
 
         let object = this.gameObjectsData.splice(objectIndex, 1);
         this.gameObjectsData.push(object);
+    }
+
+    getGameObjectByName(name){
+        return this.gameObjects.find((gameObject) => gameObject.name === name);
     }
 
 }

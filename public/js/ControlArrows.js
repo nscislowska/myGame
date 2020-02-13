@@ -41,12 +41,14 @@ export class ControlArrows {
         let gameHeight = this.scene.getGameHeight();
         let gameWidth = this.scene.getGameWidth();
 
+        let margin = 30;
+
         switch (code){
             case 'MIDDLE' : 
-                this.position.top = [gameWidth/2, 15];
-                this.position.bottom = [gameWidth/2, gameHeight - 15];
-                this.position.left = [15, gameHeight/2];
-                this.position.right = [gameWidth - 15, gameHeight/2];
+                this.position.top = [gameWidth/2, margin];
+                this.position.bottom = [gameWidth/2, gameHeight - margin];
+                this.position.left = [margin, gameHeight/2];
+                this.position.right = [gameWidth - margin, gameHeight/2];
                 break;
             default:
                 break;
@@ -56,16 +58,16 @@ export class ControlArrows {
 
     setVisibleIfCanJump(){
         let visibleArrows = [];
-        if(this.scene.getCurrentView().leftView != null){
+        if(this.scene.getCurrentView().getLeft() != null){
             visibleArrows.push(this.LEFT);
         }
-        if(this.scene.getCurrentView().rightView != null){
+        if(this.scene.getCurrentView().getRight() != null){
             visibleArrows.push(this.RIGHT);
         }
-        if(this.scene.getCurrentView().topView != null){
+        if(this.scene.getCurrentView().getTop() != null){
             visibleArrows.push(this.TOP);
         }
-        if(this.scene.getCurrentView().bottomView != null){
+        if(this.scene.getCurrentView().getBottom() != null){
             visibleArrows.push(this.BOTTOM);
         }
         this.setVisibleOnly(true, visibleArrows);

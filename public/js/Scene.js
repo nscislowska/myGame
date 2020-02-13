@@ -62,12 +62,13 @@ export class Scene extends Phaser.Scene {
     }
 
     makeGameObjects(){
-        let id=0;
+        // let id=0;
         for(let view of this.views){
             for(let data of view.gameObjectsData){
-                let gameObject = new GameObject(this, id++, [data.x, data.y], data.textureName);
+                let gameObject = new GameObject(this, name, [data.x, data.y], data.textureName);
                 gameObject.setOriginByCode(gameObject.TOP_LEFT);
                 this.add.existing(gameObject);
+                view.gameObjects.push(gameObject);
             }
         }
     }
