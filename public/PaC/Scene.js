@@ -1,6 +1,5 @@
 import { Camera } from "./Camera.js";
 import { View } from "./View.js";
-import { GameObject } from "./GameObject.js";
 
 export class Scene extends Phaser.Scene {
 
@@ -20,7 +19,8 @@ export class Scene extends Phaser.Scene {
     create (data)  {
         this.createBody(data);
         this.makeGameObjects();
-        this.sys.game.controlArrows.render(this);
+        let controls = this.sys.game.controlArrows.make(this);
+        this.addObjects(controls);
     }
     createBody(data){}
     update(time, delta) {}
@@ -62,13 +62,10 @@ export class Scene extends Phaser.Scene {
     }
 
     makeGameObjects(){
-        // let id=0;
-        for(let view of this.views){
-            for(let data of view.gameObjectsData){
-                let gameObject = new GameObject(this, name, [data.x, data.y], data.textureName);
-                gameObject.setOriginByCode(gameObject.TOP_LEFT);
-                this.add.existing(gameObject);
-                view.gameObjects.push(gameObject);
+        for(let view of this.views){            
+            for(let gameObject of view.gameObjects){
+                let image = gameObject.make(this);
+                this.add.existing(image);
             }
         }
     }

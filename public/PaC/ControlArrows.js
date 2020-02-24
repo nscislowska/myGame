@@ -20,21 +20,27 @@ export class ControlArrows {
         this.RIGHT = 'right';
         this.BOTTOM = 'bottom';
         this.ALL = [this.TOP, this.LEFT, this.RIGHT, this.BOTTOM];
+
+        this.right = new GameObject('right arrow');
+        this.left = new GameObject('left arrow');
+        this.top = new GameObject('top arrow');
+        this.bottom = new GameObject('bottom arrow');
+    
+        this.actionOnChosen(this.ALL, 'setTexture', textureName);
+        this.lockToScreen();
     }
 
-    render(scene){
+    make(scene){
         this.scene = scene;
-        this.setPosition(this.POSITION.MIDDLE);
-        this.right = new GameObject(scene, 'right arrow', this.position.right, this.textureName);
-        this.left = new GameObject(scene, 'left arrow', this.position.left, this.textureName);
-        this.top = new GameObject(scene, 'top arrow', this.position.top, this.textureName);
-        this.bottom = new GameObject(scene, 'bottom arrow', this.position.bottom, this.textureName);
-
         this.setVisibleIfCanJump();
-
         this.setOnclick();
 
-        this.lock();
+        this.setPosition(this.POSITION.MIDDLE);
+        this.right.setPositionByGlobal(...this.position.right);
+        this.left.setPositionByGlobal(...this.position.left);
+        this.top.setPositionByGlobal(...this.position.top);
+        this.bottom.setPositionByGlobal(...this.position.bottom);
+        return this.actionOnChosen(this.ALL, 'make', scene);
     }
 
     setPosition(code){
@@ -57,6 +63,7 @@ export class ControlArrows {
     }
 
     setVisibleIfCanJump(){
+        
         let visibleArrows = [];
         if(this.scene.getCurrentView().getLeft() != null){
             visibleArrows.push(this.LEFT);
@@ -78,8 +85,8 @@ export class ControlArrows {
 
         this.left.onClick(this.makeOnClick(()=>{
             camera.jumpLeft();
-        }   
-        ));
+        })
+        );
         this.right.onClick(this.makeOnClick(()=>{
             camera.jumpRight();
         }
@@ -101,8 +108,8 @@ export class ControlArrows {
         }
     }
    
-    lock(){
-        this.actionOnChosen(this.ALL, 'lock');
+    lockToScreen(){
+        this.actionOnChosen(this.ALL, 'lockToScreen', true);
     }
 
     setVisibleOnly(visible, arrowKeys) {
@@ -115,9 +122,12 @@ export class ControlArrows {
         this.actionOnChosen(arrowKeys, 'setVisible', visible);
     }
     actionOnChosen(arrowKeys, action, ...params){
+        // if(action === 'lockToScreen') console.log(params);
+        let result = [];
         for (let key of arrowKeys) {
-            this[key][action](...params);
+            result.push(this[key][action](...params));
         }
+        return result;
     }
 }
 

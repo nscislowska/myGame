@@ -1,4 +1,4 @@
-import { Game } from "./Game.js";
+import { Game } from "../PaC/Game.js";
 import {mainScene} from "./scenes/mainScene.js"
 import {arrows} from './game-objects/arrows.js'
 

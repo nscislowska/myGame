@@ -1,10 +1,10 @@
+import { GameObject } from "./GameObject.js";
+
 export class View{
     constructor(name, x,y){
         this.name = name;
         this.x = x;
         this.y = y;
-
-        this.gameObjectsData = [];
         this.gameObjects = [];
 
         this.left = null;
@@ -29,6 +29,13 @@ export class View{
 
     }
 
+    getX(){
+        return this.x;
+    }
+    getY(){
+        return this.y;
+    }
+
     getSideView(side){
         return () => this[side];
     }
@@ -50,21 +57,16 @@ export class View{
     }
 
     addGameObject(name, x, y, textureName){
-        this.gameObjectsData.push({
-            name: name,
-            x: x+this.x,
-            y: y+this.y,
-            textureName: textureName
-        })
-    }
-
-    putGameObjectAtFront(name){
-        let objectIndex = this.gameObjectsData.findIndex((data)=>{
-            return data.name === name;
-        });
-
-        let object = this.gameObjectsData.splice(objectIndex, 1);
-        this.gameObjectsData.push(object);
+        if(arguments.length===1 && typeof arguments[0] ==='object'){
+            let gameObject = arguments[0];
+            gameObject.movePositionBy(this.x, this.y);
+            this.gameObjects.push(arguments[0]);
+        }
+        else{
+        let globalX = x+this.x;
+        let globalY = y+this.y;
+        this.gameObjects.push(new GameObject(name,globalX,globalY,textureName));
+        }
     }
 
     getGameObjectByName(name){

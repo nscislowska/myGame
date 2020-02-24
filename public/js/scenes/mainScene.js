@@ -1,6 +1,7 @@
-import { generateSceneConfig, Scene } from "../Scene.js";
+import { generateSceneConfig, Scene } from "../../PaC/Scene.js";
 import {assetsImgPath} from "./sceneAssetsPath.js";
-import { View } from "../View.js";
+import { View } from "../../PaC/View.js";
+import { Door } from "../game-objects/Door.js";
 
 var sceneName = 'main';
 var mainSceneConfig = generateSceneConfig(sceneName);
@@ -46,11 +47,11 @@ function makeViews(){
     viewToOutside.setRight(view_1);
     viewToOutside.setTop(outsideView, viewToOutside.DIRECTION.ONE_WAY);
 
-    mainScene.addView(view0);
-    mainScene.addView(outsideView);
-    mainScene.addView(view1);
-    mainScene.addView(view_1);
-    mainScene.addView(viewToOutside);
+    let all_views = [view0, outsideView, view1, view_1, viewToOutside];
+    for (let view of all_views){
+        mainScene.addView(view);
+    }
+    
 }
 
 function addObjectsToView0(){
@@ -60,13 +61,27 @@ function addObjectsToView0(){
 
 function addObjectsToView1(){
     view1.addGameObject('background',0,0,'room_backg');
-    view1.addGameObject('door',mainScene.getGameWidth()/2, mainScene.getGameHeight()/10,'door');
+    view1.addGameObject(
+        new Door(
+            'new door', 
+            mainScene.getGameWidth()/2, 
+            mainScene.getGameHeight()/10,
+            'door',
+            outsideView)
+    );
 }
 
 function addObjectsToOutsideView(){
-    outsideView.addGameObject('background',0,0,'house_outer');
-    outsideView.addGameObject('door',mainScene.getGameWidth()/2, mainScene.getGameHeight()/3,'door');
+    outsideView.addGameObject('outer_background',0,0,'house_outer');
     outsideView.addGameObject('window',mainScene.getGameWidth()/5,mainScene.getGameHeight()/3,'room_window');
+    outsideView.addGameObject(
+        new Door(
+            'front door', 
+            mainScene.getGameWidth()/2, 
+            mainScene.getGameHeight()/3,
+            'door',
+            view0)
+    );
 }
 
 function addObjectsToView_1(){

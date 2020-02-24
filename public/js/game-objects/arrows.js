@@ -1,4 +1,4 @@
-import { ControlArrows } from "../ControlArrows.js";
+import { ControlArrows } from "../../PaC/ControlArrows.js";
 
 let textureName = 'star';
 let arrows = new ControlArrows(textureName);
